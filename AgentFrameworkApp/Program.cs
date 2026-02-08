@@ -39,8 +39,8 @@ while (running)
     Console.WriteLine("  3. Function Calling Agent (weather & stock tools)");
     Console.WriteLine("  4. Knowledge Base Agent (RAG pattern)");
     Console.WriteLine("  5. Multi-Tool Agent (all tools combined)");
-    Console.WriteLine("  7. Real RAG Chat with Azure AI Search (interactive)");
-    Console.WriteLine("  6. Run ALL demos sequentially");
+    Console.WriteLine("  6. Real RAG Chat with Azure AI Search (interactive)");
+    Console.WriteLine("  7. Run ALL demos sequentially");
     Console.WriteLine("  0. Exit\n");
     Console.Write("Enter choice (0-7): ");
 
@@ -65,7 +65,7 @@ while (running)
             case "5":
                 await MultiToolDemo.RunAsync(client, modelName);
                 break;
-            case "7":
+            case "6":
                 if (string.IsNullOrWhiteSpace(searchConnectionId) || string.IsNullOrWhiteSpace(searchIndexName))
                 {
                     Console.WriteLine("[Error]: AzureAISearch:ConnectionId and AzureAISearch:IndexName must be set in appsettings.json.");
@@ -75,7 +75,7 @@ while (running)
                     await AzureAISearchRAGDemo.RunAsync(client, modelName, searchConnectionId, searchIndexName);
                 }
                 break;
-            case "6":
+            case "7":
                 Console.WriteLine("\n> Running ALL demos...\n");
                 await BasicConversationDemo.RunAsync(client, modelName);
                 await CodeInterpreterDemo.RunAsync(client, modelName);
