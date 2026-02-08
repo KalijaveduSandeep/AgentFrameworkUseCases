@@ -11,14 +11,14 @@ A .NET 8 console application demonstrating **6 different use cases** of the Azur
 | 3 | **Function Calling Agent** | A "MarketAssistant" that calls local `get_weather` and `get_stock_price` functions, demonstrating tool integration. |
 | 4 | **Knowledge Base Agent (RAG)** | A "SupportAgent" that searches a simulated knowledge base before answering—refund policies, pricing plans, security certs. |
 | 5 | **Multi-Tool Agent** | A "UniversalAssistant" combining Code Interpreter + weather + stocks + calculator + knowledge base. The agent picks the right tool(s) per question. |
-| 7 | **Azure AI Search RAG Chat** | A "RAG-SearchAgent" that connects to a **live Azure AI Search index** to retrieve real documents before answering. Supports multi-turn interactive chat with citation support. |
+| 6 | **Azure AI Search RAG Chat** | A "RAG-SearchAgent" that connects to a **live Azure AI Search index** to retrieve real documents before answering. Supports multi-turn interactive chat with citation support. |
 
 ## Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or later
 - An **Azure AI Foundry** project with a deployed model (e.g., `gpt-4o`, `gpt-4o-mini`)
 - Azure CLI authenticated (`az login`) or another credential supported by `DefaultAzureCredential`
-- *(For Use Case 7)* An **Azure AI Search** resource with an existing index and a connection configured in Azure AI Foundry
+- *(For Use Case 6)* An **Azure AI Search** resource with an existing index and a connection configured in Azure AI Foundry
 
 ## Setup
 
@@ -78,7 +78,7 @@ AgentFrameworkApp/
     ├── FunctionCallingDemo.cs          # Use Case 3: Weather & stock tools
     ├── KnowledgeBaseDemo.cs            # Use Case 4: RAG pattern (simulated)
     ├── MultiToolDemo.cs               # Use Case 5: All tools combined
-    └── AzureAISearchRAGDemo.cs        # Use Case 7: Live Azure AI Search RAG
+    └── AzureAISearchRAGDemo.cs        # Use Case 6: Live Azure AI Search RAG
 ```
 
 ## Key Packages
@@ -97,9 +97,9 @@ AgentFrameworkApp/
 4. The helper polls the run status. When the agent calls a function tool (`RunStatus.RequiresAction`), the `FunctionDispatcher` executes it locally and submits the result back.
 5. After completion, agent responses are printed and resources are cleaned up.
 
-### Use Case 7 – Azure AI Search RAG
+### Use Case 6 – Azure AI Search RAG
 
-Use Case 7 differs from the simulated RAG demo (Use Case 4) by connecting to a **real Azure AI Search index**:
+Use Case 6 differs from the simulated RAG demo (Use Case 4) by connecting to a **real Azure AI Search index**:
 
 - The agent is created with an `AzureAISearchToolResource` pointing to your live index.
 - Queries use the **Semantic** query type for keyword search with semantic reranking.
