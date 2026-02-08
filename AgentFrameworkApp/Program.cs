@@ -17,6 +17,9 @@ string projectEndpoint = configuration["AzureAI:ConnectionString"]
 
 string modelName = configuration["AzureAI:ModelDeploymentName"] ?? "gpt-4o";
 
+string searchConnectionId = configuration["AzureAISearch:ConnectionId"] ?? "";
+string searchIndexName = configuration["AzureAISearch:IndexName"] ?? "";
+
 // ─── Create Client ───────────────────────────────────────────────────────────
 PersistentAgentsClient client = AgentClientFactory.GetClient(projectEndpoint);
 
@@ -36,9 +39,10 @@ while (running)
     Console.WriteLine("  3. Function Calling Agent (weather & stock tools)");
     Console.WriteLine("  4. Knowledge Base Agent (RAG pattern)");
     Console.WriteLine("  5. Multi-Tool Agent (all tools combined)");
+    Console.WriteLine("  7. Real RAG Chat with Azure AI Search (interactive)");
     Console.WriteLine("  6. Run ALL demos sequentially");
     Console.WriteLine("  0. Exit\n");
-    Console.Write("Enter choice (0-6): ");
+    Console.Write("Enter choice (0-7): ");
 
     string? choice = Console.ReadLine()?.Trim();
 
@@ -61,6 +65,16 @@ while (running)
             case "5":
                 await MultiToolDemo.RunAsync(client, modelName);
                 break;
+            case "7":
+                if (string.IsNullOrWhiteSpace(searchConnectionId) || string.IsNullOrWhiteSpace(searchIndexName))
+                {
+                    Console.WriteLine("[Error]: AzureAISearch:ConnectionId and AzureAISearch:IndexName must be set in appsettings.json.");
+                }
+                else
+                {
+                    await AzureAISearchRAGDemo.RunAsync(client, modelName, searchConnectionId, searchIndexName);
+                }
+                break;
             case "6":
                 Console.WriteLine("\n> Running ALL demos...\n");
                 await BasicConversationDemo.RunAsync(client, modelName);
@@ -75,7 +89,7 @@ while (running)
                 Console.WriteLine("\nGoodbye!");
                 break;
             default:
-                Console.WriteLine("Invalid choice. Please enter 0-6.");
+                Console.WriteLine("Invalid choice. Please enter 0-7.");
                 break;
         }
     }
